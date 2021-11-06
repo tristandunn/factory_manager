@@ -25,14 +25,15 @@ git clone https://github.com/tristandunn/factory_manager
 Install the dependencies and setup the database.
 
 ```sh
-bin/setup
+bundle install
+bundle exec appraisal install
 ```
 
 You can verify everything is installed and setup correctly by running the
 `check` Rake task to run the tests and lint the code.
 
 ```sh
-bundle exec rake check
+bundle exec appraisal rake check
 ```
 
 ## Issues and Feature Requests
