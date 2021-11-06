@@ -4,220 +4,56 @@ require "spec_helper"
 
 describe FactoryManager do
   describe ".build" do
-    context "with a valid factory" do
-      it "builds a record" do
-        result = build do
-          self.user = user
-        end
+    subject(:build) { described_class.build(&block) }
 
-        expect(result.user).to be_a(User)
-      end
+    let(:block)     { -> {} }
+    let(:generator) { instance_double(described_class::Generator) }
 
-      it "does not persist the record" do
-        result = build do
-          self.user = user
-        end
-
-        expect(result.user).not_to be_persisted
-      end
+    before do
+      allow(generator).to receive(:generate)
+      allow(described_class::Generator).to receive(:new).and_return(generator)
     end
 
-    context "with a factory trait" do
-      it "builds a record using the trait" do
-        result = build do
-          self.user = user(:admin, name: "Admin")
-        end
+    it "creates a generator with a build strategy" do
+      build
 
-        expect(result.user).to have_attributes(name: "Admin", admin: true)
-      end
+      expect(described_class::Generator).to have_received(:new)
+        .with(strategy: :build)
     end
 
-    context "with a number" do
-      it "builds multiple records" do
-        result = build do
-          self.users = user(2, :admin, name: "Admin")
-        end
+    it "generates with the provided block" do # rubocop:disable RSpec/MultipleExpectations
+      build
 
-        expect(result.users).to contain_exactly(
-          an_object_having_attributes(name: "Admin", admin: true),
-          an_object_having_attributes(name: "Admin", admin: true)
-        )
+      expect(generator).to have_received(:generate) do |&passed_block|
+        expect(passed_block).to eq(block)
       end
-    end
-
-    context "with custom attributes" do
-      it "forwards the custom attributes to the factory" do
-        result = build do
-          self.user = user(name: "Tester")
-        end
-
-        expect(result.user).to have_attributes(name: "Tester")
-      end
-    end
-
-    context "with associations" do
-      it "allows nesting of associated records" do
-        result = build do
-          self.user = user do
-            self.post = post(title: "User's Post")
-          end
-        end
-
-        expect(result.post).to have_attributes(
-          user:  result.user,
-          title: "User's Post"
-        )
-      end
-
-      it "allows multiple level nesting of associated records" do
-        result = build do
-          self.user_1 = user do
-            self.user_2 = user do
-              self.post = post(title: "User's Post")
-            end
-          end
-        end
-
-        expect(result).to have_attributes(
-          user_1: an_instance_of(User),
-          user_2: an_instance_of(User),
-          post:   an_object_having_attributes(
-            user:  result.user_2,
-            title: "User's Post"
-          )
-        )
-      end
-    end
-
-    context "with an invalid factory" do
-      it "raises a no method error" do
-        expect do
-          build { fake }
-        end.to raise_error(NoMethodError)
-      end
-    end
-
-    def build(&block)
-      described_class.build(&block)
     end
   end
 
   describe ".create" do
-    context "with a valid factory" do
-      it "creates a record" do
-        create do
-          user
-        end
+    subject(:create) { described_class.create(&block) }
 
-        expect(User.count).to eq(1)
-      end
+    let(:block)     { -> {} }
+    let(:generator) { instance_double(described_class::Generator) }
+
+    before do
+      allow(generator).to receive(:generate)
+      allow(described_class::Generator).to receive(:new).and_return(generator)
     end
 
-    context "with a factory trait" do
-      it "creates a record using the trait" do
-        create do
-          user(:admin, name: "Admin")
-        end
+    it "creates a generator with a create strategy" do
+      create
 
-        expect(User.all).to contain_exactly(
-          an_object_having_attributes(name: "Admin", admin: true)
-        )
-      end
+      expect(described_class::Generator).to have_received(:new)
+        .with(strategy: :create)
     end
 
-    context "with a number" do
-      it "creates multiple records" do
-        create do
-          user(2, :admin, name: "Admin")
-        end
+    it "generates with the provided block" do # rubocop:disable RSpec/MultipleExpectations
+      create
 
-        expect(User.all).to contain_exactly(
-          an_object_having_attributes(name: "Admin", admin: true),
-          an_object_having_attributes(name: "Admin", admin: true)
-        )
+      expect(generator).to have_received(:generate) do |&passed_block|
+        expect(passed_block).to eq(block)
       end
-    end
-
-    context "with custom attributes" do
-      it "forwards the custom attributes to the factory" do
-        create do
-          user(name: "Tester")
-        end
-
-        expect(User.all).to contain_exactly(
-          an_object_having_attributes(name: "Tester")
-        )
-      end
-    end
-
-    context "with associations" do
-      it "allows nesting of associated records" do
-        create do
-          user do
-            post(title: "User's Post")
-          end
-        end
-
-        expect(User.all).to contain_exactly(
-          an_object_having_attributes(
-            posts: [an_object_having_attributes(title: "User's Post")]
-          )
-        )
-      end
-
-      it "allows multiple level nesting of associated records" do
-        create do
-          user do
-            user do
-              post(title: "User's Post")
-            end
-          end
-        end
-
-        expect(User.all).to contain_exactly(
-          an_object_having_attributes(
-            posts: []
-          ),
-          an_object_having_attributes(
-            posts: [an_object_having_attributes(title: "User's Post")]
-          )
-        )
-      end
-    end
-
-    context "with local variables" do
-      it "returns an object with local variable assignments" do
-        result = create do
-          user do
-            self.admin = admin = user(:admin)
-
-            self.user = user(name: "Local User") do
-              self.post = post(title: "User's Post")
-            end
-
-            self.announcement = post(user: admin)
-          end
-        end
-
-        expect(result).to have_attributes(
-          admin:        an_object_having_attributes(admin: true),
-          announcement: an_object_having_attributes(user: result.admin),
-          post:         an_object_having_attributes(title: "User's Post"),
-          user:         an_object_having_attributes(name: "Local User")
-        )
-      end
-    end
-
-    context "with an invalid factory" do
-      it "raises a no method error" do
-        expect do
-          create { fake }
-        end.to raise_error(NoMethodError)
-      end
-    end
-
-    def create(&block)
-      described_class.create(&block)
     end
   end
 end
