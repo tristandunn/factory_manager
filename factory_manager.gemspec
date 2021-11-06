@@ -17,9 +17,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.6"
 
-  s.add_dependency "factory_bot", "~> 6.0"
+  s.add_dependency "factory_bot", ">= 5"
 
   s.add_development_dependency "activerecord",        "6.1.4.1"
+  s.add_development_dependency "appraisal",           "2.4.1"
   s.add_development_dependency "rake",                "13.0.6"
   s.add_development_dependency "rspec",               "3.10.0"
   s.add_development_dependency "rubocop",             "1.22.3"
