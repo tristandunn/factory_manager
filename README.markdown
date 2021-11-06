@@ -11,7 +11,9 @@ allowing deeply nested records to be created easily.
 ## Example
 
 Create a forum, with a single category, a first post for the category, an
-administrative user, and one-hundred approved posts by the administrator.
+administrative user, and one-hundred approved posts by the administrator. Then
+create a featured category aliased as category for associations with a single
+post.
 
 ```ruby
 result = FactoryManager.create do
@@ -22,6 +24,10 @@ result = FactoryManager.create do
       self.administrator = administrator = user(:admin)
 
       post(100, :approved, user: administrator)
+    end
+
+    featured_category(alias: :category) do
+      post
     end
   end
 end
@@ -68,6 +74,10 @@ FactoryBot.defined do
     trait :approved do
       approved { true }
     end
+
+    factory :featured_category do
+      featured { true }
+    end
   end
 end
 ```
@@ -100,11 +110,38 @@ result = FactoryManager.create do
       # the +post.user+ association to the administrator user created above and
       # the +post.category+ to the news category created above.
       post(100, :approved, user: administrator)
+
+      # Create a +Category+ using the +featured_category+ factory, aliasing the
+      # factory as a +category+ to correctly associated child records, such as
+      # the single post created in it.
+      featured_category(alias: :category) do
+        post
+      end
     end
   end
 end
 ```
 </details>
+
+## Configuration
+
+### Settings
+
+Setting | Description | Default
+--------|-------------|--------
+`alias_name` | The option name for aliasing a factory. | `:alias`
+
+### Usage
+
+```ruby
+# Single setting.
+FactoryManager.configuration.alias_name = :custom_alias_name
+
+# Multiple settings.
+FactoryManager.configure do |configuration|
+  configuration.alias_name = :custom_alias_name
+end
+```
 
 ## License
 

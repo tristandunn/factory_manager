@@ -17,6 +17,12 @@ RSpec.configure do |config|
         trait :admin do
           admin { true }
         end
+
+        factory :admin_user do
+          sequence(:name) { |n| "Admin ##{n}" }
+
+          admin { true }
+        end
       end
     end
   end
