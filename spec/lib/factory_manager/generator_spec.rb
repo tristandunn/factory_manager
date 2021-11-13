@@ -6,16 +6,16 @@ describe FactoryManager::Generator do
   describe "#generate, with a build strategy" do
     context "with a valid factory" do
       it "builds a record" do
-        result = build do
-          self.user = user
+        result = build do |locals|
+          locals.user = user
         end
 
         expect(result.user).to be_a(User)
       end
 
       it "does not persist the record" do
-        result = build do
-          self.user = user
+        result = build do |locals|
+          locals.user = user
         end
 
         expect(result.user).not_to be_persisted
@@ -24,8 +24,8 @@ describe FactoryManager::Generator do
 
     context "with a factory trait" do
       it "builds a record using the trait" do
-        result = build do
-          self.user = user(:admin, name: "Admin")
+        result = build do |locals|
+          locals.user = user(:admin, name: "Admin")
         end
 
         expect(result.user).to have_attributes(name: "Admin", admin: true)
@@ -34,8 +34,8 @@ describe FactoryManager::Generator do
 
     context "with a number" do
       it "builds multiple records" do
-        result = build do
-          self.users = user(2, :admin, name: "Admin")
+        result = build do |locals|
+          locals.users = user(2, :admin, name: "Admin")
         end
 
         expect(result.users).to contain_exactly(
@@ -47,8 +47,8 @@ describe FactoryManager::Generator do
 
     context "with custom attributes" do
       it "forwards the custom attributes to the factory" do
-        result = build do
-          self.user = user(name: "Tester")
+        result = build do |locals|
+          locals.user = user(name: "Tester")
         end
 
         expect(result.user).to have_attributes(name: "Tester")
@@ -57,9 +57,9 @@ describe FactoryManager::Generator do
 
     context "with associations" do
       it "allows nesting of associated records" do
-        result = build do
-          self.user = user do
-            self.post = post(title: "User's Post")
+        result = build do |locals|
+          locals.user = user do
+            locals.post = post(title: "User's Post")
           end
         end
 
@@ -70,10 +70,10 @@ describe FactoryManager::Generator do
       end
 
       it "allows multiple level nesting of associated records" do
-        result = build do
-          self.user_1 = user do
-            self.user_2 = user do
-              self.post = post(title: "User's Post")
+        result = build do |locals|
+          locals.user_1 = user do
+            locals.user_2 = user do
+              locals.post = post(title: "User's Post")
             end
           end
         end
@@ -217,15 +217,15 @@ describe FactoryManager::Generator do
 
     context "with local variables" do
       it "returns an object with local variable assignments" do
-        result = create do
+        result = create do |locals|
           user do
-            self.admin = admin = user(:admin)
+            locals.admin = user(:admin)
 
-            self.user = user(name: "Local User") do
-              self.post = post(title: "User's Post")
+            locals.user = user(name: "Local User") do
+              locals.post = post(title: "User's Post")
             end
 
-            self.announcement = post(user: admin)
+            locals.announcement = post(user: locals.admin)
           end
         end
 

@@ -6,19 +6,18 @@ module FactoryManager
     # Initializes a new factory generator.
     def initialize(strategy:)
       @associations = {}
-      @locals = {}
       @results = {}
       @strategy = strategy
     end
 
     # Generates the factory.
     #
-    # @yield Instance evaluates the block to generate the factory.
+    # @yield Instance executes the block to generate the factory.
     # @return [OpenStruct] An object containing the generator results.
     def generate(&block)
-      instance_eval(&block)
-
-      OpenStruct.new(@locals)
+      OpenStruct.new.tap do |locals|
+        instance_exec(locals, &block)
+      end
     end
 
     private
@@ -41,22 +40,6 @@ module FactoryManager
       end
 
       record
-    end
-
-    # Assigns a local variable.
-    #
-    # @param [Symbol] method The method name for the local.
-    # @param [*] value The value of the local.
-    def _assign_local(method, value)
-      @locals[method.to_s.tr("=", "")] = value
-    end
-
-    # Determines if the method is an assignment method.
-    #
-    # @param [Symbol] method The assignment method name.
-    # @return [Boolean] Whether or not the method is an assignment method.
-    def _assignment_method?(method)
-      method.to_s.end_with?("=")
     end
 
     # Finds the matching associations for a specific factory.
@@ -112,34 +95,27 @@ module FactoryManager
 
     # Attempts to generate a factory record for the missing method.
     #
-    # Also handles assignments for the resulting generator object.
-    #
     # @param [Symbol] method The name of the method.
     # @param [Hash] arguments The factory arguments.
     # @return [ActiveRecord::Base] The built factory record.
     def method_missing(method, *arguments, &block)
       super unless respond_to_missing?(method)
 
-      if _assignment_method?(method)
-        _assign_local(method, arguments.first)
-      else
-        record = _generate_factory(method, *arguments)
+      record = _generate_factory(method, *arguments)
 
-        _add_association(record, name: method) do
-          generate(&block) if block
-        end
+      _add_association(record, name: method) do
+        generate(&block) if block
       end
     end
 
-    # Determines if a factory exists for the missing method, or if a variable
-    # is being assigned.
+    # Determines if a factory exists for the missing method.
     #
     # @param [Symbol] method The name of the method.
     # @return [Boolean] Whether or not the factory exists.
     def respond_to_missing?(method)
       !FactoryBot.factories.find(method).nil?
     rescue KeyError
-      _assignment_method?(method)
+      false
     end
   end
 end
