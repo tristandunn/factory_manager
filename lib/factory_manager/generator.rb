@@ -84,13 +84,12 @@ module FactoryManager
     # @return [Array] The names the factory can be referred to as.
     def _factory_names(name)
       factory = FactoryBot.factories.find(name)
-      parent  = factory.__send__(:parent)
-      names   = factory.names
+      names   = []
 
-      while parent.respond_to?(:names)
-        names.push(*parent.names)
+      while factory.respond_to?(:names)
+        names.push(*factory.names)
 
-        parent = parent.__send__(:parent)
+        factory = factory.__send__(:parent)
       end
 
       names
