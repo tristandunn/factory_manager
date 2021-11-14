@@ -15,14 +15,14 @@ administrative user, and one-hundred approved posts by the administrator. Then
 create a featured category with a single post.
 
 ```ruby
-result = FactoryManager.create do
+result = FactoryManager.create do |locals|
   forum do
     category(name: "News") do
       post(title: "First!")
 
-      self.administrator = administrator = user(:admin)
+      locals.administrator = user(:admin)
 
-      post(100, :approved, user: administrator)
+      post(100, :approved, user: locals.administrator)
     end
 
     featured_category do
@@ -88,7 +88,7 @@ end
 ```ruby
 # Starts a manager that will create records. Alternatively user
 # +FactoryManager.build+ to build records.
-result = FactoryManager.create do
+result = FactoryManager.create do |locals|
   # Creates a +Forum+ record using the default attributes from the factory.
   forum do
     # Creates a +Category+ record with the default attributes but overrides the
@@ -100,15 +100,15 @@ result = FactoryManager.create do
       post(title: "First!")
 
       # Create a +User+ record using the +:admin+ trait. The +user.forum+
-      # association will automatically be set to the +Forum+ created above but a
-      # category will not be assigned. The +self.administrator+ assignment will
-      # result in the user being available on the +result+ object.
-      self.administrator = administrator = user(:admin)
+      # association will automatically be set to the +Forum+ created above but
+      # a category will not be assigned. The +locals.administrator+ assignment
+      # will result in the user being available on the +result+ object.
+      locals.administrator = user(:admin)
 
       # Create one-hundred +Post+ records using the +:approved+ trait setting
       # the +post.user+ association to the administrator user created above and
       # the +post.category+ to the news category created above.
-      post(100, :approved, user: administrator)
+      post(100, :approved, user: locals.administrator)
 
       # Create a +Category+ using the +featured_category+ factory, aliasing the
       # factory as a +category+ to correctly associated child records, such as
