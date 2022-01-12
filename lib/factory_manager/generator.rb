@@ -15,7 +15,7 @@ module FactoryManager
     # @yield Instance executes the block to generate the factory.
     # @return [OpenStruct] An object containing the generator results.
     def generate(&block)
-      OpenStruct.new.tap do |locals|
+      OpenStruct.new.tap do |locals| # rubocop:disable Style/OpenStructUse
         instance_exec(locals, &block)
       end
     end
