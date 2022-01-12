@@ -10,24 +10,25 @@ Gem::Specification.new do |s|
   s.summary     = "A factory manager of factory bots."
   s.description = "A factory manager of factory bots."
   s.license     = "MIT"
+  s.metadata    = { "rubygems_mfa_required" => "true" }
 
   s.files        = Dir["lib/**/*"].to_a
   s.test_files   = Dir["spec/**/*"].to_a
   s.require_path = "lib"
 
-  s.required_ruby_version = ">= 2.6"
+  s.required_ruby_version = ">= 2.7"
 
   s.add_dependency "factory_bot", ">= 5"
 
-  s.add_development_dependency "activerecord",        "6.1.4.1"
+  s.add_development_dependency "activerecord",        "7.0.1"
   s.add_development_dependency "appraisal",           "2.4.1"
   s.add_development_dependency "rake",                "13.0.6"
   s.add_development_dependency "rspec",               "3.10.0"
-  s.add_development_dependency "rubocop",             "1.22.3"
-  s.add_development_dependency "rubocop-performance", "1.12.0"
+  s.add_development_dependency "rubocop",             "1.24.1"
+  s.add_development_dependency "rubocop-performance", "1.13.1"
   s.add_development_dependency "rubocop-rake",        "0.6.0"
-  s.add_development_dependency "rubocop-rspec",       "2.5.0"
+  s.add_development_dependency "rubocop-rspec",       "2.7.0"
   s.add_development_dependency "simplecov-console",   "0.9.1"
   s.add_development_dependency "sqlite3",             "1.4.2"
-  s.add_development_dependency "yard",                "0.9.26"
+  s.add_development_dependency "yard",                "0.9.27"
 end
