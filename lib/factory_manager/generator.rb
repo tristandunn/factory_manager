@@ -93,6 +93,22 @@ module FactoryManager
       FactoryBot.public_send(method, name, *arguments)
     end
 
+    # Generate a sequence.
+    #
+    # @param [String] name The name of the sequence to generate.
+    # @return [...] The generated sequence.
+    def _generate_sequence(name)
+      FactoryBot.generate(name)
+    end
+
+    # Determine if the method is attempt to generate a valid sequence.
+    #
+    # @return [Boolean] Whether or not the sequence exists.
+    def _sequence?(method, argument)
+      method == :sequence &&
+        !FactoryBot::Internal.sequences.find(argument).nil?
+    end
+
     # Attempts to generate a factory record for the missing method.
     #
     # @param [Symbol] method The name of the method.
@@ -101,10 +117,14 @@ module FactoryManager
     def method_missing(method, *arguments, &block)
       super unless respond_to_missing?(method)
 
-      record = _generate_factory(method, *arguments)
+      if _sequence?(method, arguments.first)
+        _generate_sequence(*arguments)
+      else
+        record = _generate_factory(method, *arguments)
 
-      _add_association(record, name: method) do
-        generate(&block) if block
+        _add_association(record, name: method) do
+          generate(&block) if block
+        end
       end
     end
 
@@ -113,7 +133,8 @@ module FactoryManager
     # @param [Symbol] method The name of the method.
     # @return [Boolean] Whether or not the factory exists.
     def respond_to_missing?(method)
-      !FactoryBot.factories.find(method).nil?
+      method == :sequence ||
+        !FactoryBot.factories.find(method).nil?
     rescue KeyError
       false
     end

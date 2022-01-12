@@ -10,15 +10,16 @@ allowing deeply nested records to be created easily.
 
 ## Example
 
-Create a forum, with a single category, a first post for the category, an
-administrative user, and one-hundred approved posts by the administrator. Then
-create a featured category with a single post.
+Create a forum, with a single category, a first post for the category, post with
+a sequence generated title, an administrative user, and one-hundred approved
+posts by the administrator. Then create a featured category with a single post.
 
 ```ruby
 result = FactoryManager.create do |locals|
   forum do
     category(name: "News") do
       post(title: "First!")
+      post(title: generate(:title))
 
       locals.administrator = user(:admin)
 
@@ -36,7 +37,7 @@ result.administrator
 result.administrator.posts.count
 # => 100
 result.administrator.forum.categories.first.posts.count
-# => 101
+# => 102
 ```
 
 <details>
@@ -78,6 +79,8 @@ FactoryBot.defined do
       featured { true }
     end
   end
+
+  sequence(:seed) { "Title ##{rand}" }
 end
 ```
 </details>
@@ -98,6 +101,10 @@ result = FactoryManager.create do |locals|
       # Create a +Post+ record with a custom title, automatically setting the
       # +post.category+ association to the news category created above.
       post(title: "First!")
+
+      # Create a +Post+ record with a sequence generated title, also automatically
+      # setting the # +post.category+ association to the news category created above.
+      post(title: generate(:title))
 
       # Create a +User+ record using the +:admin+ trait. The +user.forum+
       # association will automatically be set to the +Forum+ created above but
