@@ -7,6 +7,7 @@ RSpec.configure do |config|
     FactoryBot.define do
       factory :post do
         user
+        uuid
 
         sequence(:title) { |n| "Post ##{n}" }
       end
@@ -23,6 +24,10 @@ RSpec.configure do |config|
 
           admin { true }
         end
+      end
+
+      sequence :uuid do
+        SecureRandom.uuid
       end
     end
   end

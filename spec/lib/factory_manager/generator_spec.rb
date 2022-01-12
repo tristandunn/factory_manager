@@ -55,6 +55,32 @@ describe FactoryManager::Generator do
       end
     end
 
+    context "with a sequence" do
+      it "generates a sequence as a local" do
+        result = build do |locals|
+          locals.uuid = sequence(:uuid)
+        end
+
+        expect(result.uuid).to match(/\A[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\z/i)
+      end
+
+      it "generates a sequence as an argument" do
+        result = build do |locals|
+          locals.post = post(uuid: sequence(:uuid))
+        end
+
+        expect(result.post.uuid).to match(/\A[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\z/i)
+      end
+    end
+
+    context "with an invalid sequence" do
+      it "raises a key error" do
+        expect do
+          build { sequence(:fake) }
+        end.to raise_error(KeyError)
+      end
+    end
+
     context "with associations" do
       it "allows nesting of associated records" do
         result = build do |locals|

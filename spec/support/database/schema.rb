@@ -14,6 +14,7 @@ RSpec.configure do |config|
 
       create_table :posts, force: true do |t|
         t.references :user, null: false
+        t.string :uuid, null: false
         t.string :title, null: false
 
         t.timestamps null: false

@@ -12,6 +12,7 @@ RSpec.configure do |config|
     class Post < ApplicationRecord
       belongs_to :user, required: true
 
+      validates :uuid, presence: true
       validates :title, presence: true
     end
 

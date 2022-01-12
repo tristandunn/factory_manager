@@ -3,6 +3,7 @@
 ## 0.2.0 — Unreleased
 
 * Add support for aliased and nested factories.
+* Add support for generating sequences.
 * Replace self assignments with a yielded locals object.
 * Support multiple versions of factory_bot.
 * Adds support for Ruby 3.1.
