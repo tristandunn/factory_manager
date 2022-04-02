@@ -53,6 +53,10 @@ FactoryBot.defined do
     association :forum
 
     name { "Announcements" }
+
+    factory :featured_category do
+      featured { true }
+    end
   end
 
   factory :user do
@@ -73,10 +77,6 @@ FactoryBot.defined do
 
     trait :approved do
       approved { true }
-    end
-
-    factory :featured_category do
-      featured { true }
     end
   end
 
@@ -117,10 +117,10 @@ result = FactoryManager.create do |locals|
       # the +post.category+ to the news category created above.
       post(100, :approved, user: locals.administrator)
 
-      # Create a +Category+ using the +featured_category+ factory, aliasing the
-      # factory as a +category+ to correctly associated child records, such as
-      # the single post created in it.
-      featured_category(alias: :category) do
+      # Create a +Category+ using the +featured_category+ factory and it
+      # automatically knows the parent factory is a +category+ to correctly
+      # associate child records, such as the single post created in it.
+      featured_category do
         post
       end
     end
