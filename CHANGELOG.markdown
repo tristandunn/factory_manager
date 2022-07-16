@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — Unreleased
+## 0.2.0 — July 16th, 2022
 
 * Add support for aliased and nested factories.
 * Add support for generating sequences.
