@@ -89,7 +89,7 @@ end
   <summary>View the example with inline comments.</summary>
 
 ```ruby
-# Starts a manager that will create records. Alternatively user
+# Starts a manager that will create records. Alternatively use
 # +FactoryManager.build+ to build records.
 result = FactoryManager.create do |locals|
   # Creates a +Forum+ record using the default attributes from the factory.
