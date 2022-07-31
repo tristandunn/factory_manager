@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0 — Unreleased
+
+* Add support for registering managers.
+
 ## 0.2.0 — July 16th, 2022
 
 * Add support for aliased and nested factories.

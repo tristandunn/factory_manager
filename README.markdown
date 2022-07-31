@@ -8,7 +8,12 @@ Creating a deeply nested set of records for seeding or testing can be difficult.
 factory_manager creates a DSL based on available [factory_bot][] factories,
 allowing deeply nested records to be created easily.
 
-## Example
+## Examples
+
+### Single-use
+
+Provide a block to `build` or `create` to generate the factories within the
+block.
 
 Create a forum, with a single category, a first post for the category, post with
 a sequence generated title, an administrative user, and one-hundred approved
@@ -128,6 +133,30 @@ result = FactoryManager.create do |locals|
 end
 ```
 </details>
+
+### Multi-use
+
+Provide a name and block to `register` to register a manager, allowing you to
+provide the name to `build` and `create` to generate the factories within the
+registered block multiple times. Think of it as a factory of factories.
+
+```ruby
+FactoryManager.register(:lumbergh) do |locals|
+  locals.user = user do
+    tps_report(2, :incomplete)
+  end
+end
+
+peter = FactoryManager.create(:lumbergh).user
+samir = FactoryManager.create(:lumbergh).user
+
+peter.id == samir.id
+# => false
+peter.tps_reports == samir.tps_reports
+# => false
+peter.tps_reports.count == samir.tps_reports.count
+# => true
+```
 
 ## License
 
