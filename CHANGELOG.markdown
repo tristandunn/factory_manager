@@ -3,6 +3,7 @@
 ## 0.3.0 — Unreleased
 
 * Add support for registering managers.
+* Update development dependencies.
 
 ## 0.2.0 — July 16th, 2022
 
