@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 — Unreleased
+## 0.3.0 — August 9th, 2022
 
 * Add support for registering managers.
 * Update development dependencies.
