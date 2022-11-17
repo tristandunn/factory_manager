@@ -85,7 +85,7 @@ FactoryBot.defined do
     end
   end
 
-  sequence(:seed) { "Title ##{rand}" }
+  sequence(:title) { "Title ##{rand}" }
 end
 ```
 </details>
