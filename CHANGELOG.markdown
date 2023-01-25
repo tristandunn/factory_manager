@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Removes support for Ruby 2.7.
 * Update development dependencies.
 
 ## 0.3.0 — August 9th, 2022
