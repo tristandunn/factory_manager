@@ -19,15 +19,14 @@ Gem::Specification.new do |s|
 
   s.add_dependency "factory_bot", ">= 5"
 
-  s.add_development_dependency "activerecord",        "7.0.4.2"
+  s.add_development_dependency "activerecord",        "7.0.4.3"
   s.add_development_dependency "appraisal",           "2.4.1"
   s.add_development_dependency "rake",                "13.0.6"
   s.add_development_dependency "rspec",               "3.12.0"
-  s.add_development_dependency "rubocop",             "1.44.0"
-  s.add_development_dependency "rubocop-performance", "1.15.2"
+  s.add_development_dependency "rubocop",             "1.48.1"
+  s.add_development_dependency "rubocop-performance", "1.16.0"
   s.add_development_dependency "rubocop-rake",        "0.6.0"
-  s.add_development_dependency "rubocop-rspec",       "2.18.1"
-  s.add_development_dependency "simplecov-console",   "0.9.1"
-  s.add_development_dependency "sqlite3",             "1.6.0"
+  s.add_development_dependency "rubocop-rspec",       "2.19.0"
+  s.add_development_dependency "sqlite3",             "1.6.1"
   s.add_development_dependency "yard",                "0.9.28"
 end
