@@ -9,6 +9,9 @@ AllCops:
   Exclude:
     - gemfiles/*.gemfile
 
+Gemspec/DevelopmentDependencies:
+  EnforcedStyle: gemspec
+
 Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
