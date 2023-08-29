@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Adds support for Ruby 3.2.
 * Removes support for Ruby 2.7.
 * Update development dependencies.
 
