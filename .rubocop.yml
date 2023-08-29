@@ -1,4 +1,5 @@
 require:
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rake
   - rubocop-rspec
@@ -8,6 +9,8 @@ AllCops:
   TargetRubyVersion: 3.0
   Exclude:
     - gemfiles/*.gemfile
+    - gemfiles/vendor/bundle/**/*
+    - vendor/**/*
 
 Gemspec/DevelopmentDependencies:
   EnforcedStyle: gemspec
