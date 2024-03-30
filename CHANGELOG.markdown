@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 — March 30th, 2024
 
 * Add support for Ruby 3.2 and Ruby 3.3.
 * Remove support for Ruby 2.7 and Ruby 3.0.
