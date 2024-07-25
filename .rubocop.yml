@@ -33,9 +33,6 @@ Naming/VariableNumber:
 RSpec/ExampleLength:
   Max: 20
 
-RSpec/FilePath:
-  Enabled: false
-
 RSpec/MultipleDescribes:
   Enabled: false
 
