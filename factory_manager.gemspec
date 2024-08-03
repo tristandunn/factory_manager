@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "appraisal",           "2.5.0"
   s.add_development_dependency "rake",                "13.2.1"
   s.add_development_dependency "rspec",               "3.13.0"
-  s.add_development_dependency "rubocop",             "1.65.0"
+  s.add_development_dependency "rubocop",             "1.65.1"
   s.add_development_dependency "rubocop-factory_bot", "2.26.1"
   s.add_development_dependency "rubocop-performance", "1.21.1"
   s.add_development_dependency "rubocop-rake",        "0.6.0"
