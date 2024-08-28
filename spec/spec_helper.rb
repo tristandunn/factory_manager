@@ -2,6 +2,8 @@
 
 require "bundler/setup"
 
+require "active_support/inflector"
+
 if ENV["CI"] || ENV["COVERAGE"]
   require "simplecov"
   require "simplecov-console"
