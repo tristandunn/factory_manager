@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* Add support for Ruby 3.4.
+* Remove support for Ruby 3.1.
 * Update development dependencies.
 
 ## 0.4.0 — March 30th, 2024
