@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 — June 10th, 2025
 
 * Add support for Ruby 3.4.
 * Remove support for Ruby 3.1.
