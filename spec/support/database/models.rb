@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Lint/ConstantDefinitionInBlock
+# rubocop:disable-next Lint/ConstantDefinitionInBlock
 RSpec.configure do |config|
   config.before(:suite) do
     # The base ActiveRecord class.
@@ -24,4 +24,3 @@ RSpec.configure do |config|
     end
   end
 end
-# rubocop:enable Lint/ConstantDefinitionInBlock
